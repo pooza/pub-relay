@@ -41,11 +41,29 @@ Requirements:
 
 ## Installation
 
-Download the binaries.
+Require Crystal >= 1.1.1
+
+```
+shards update
+shards build --release
+
+openssl genrsa 2048 > actor.pem
+chmod 600 actor.pem
+
+cp .env.example .env
+# Edit it
+
+bin/pub-relay
+```
 
 ## Usage
 
-TODO
+### Endpoints
+
+- Inbox: `/inbox`
+- Actor: `/actor`
+- NodeInfo: `/nodeinfo/2.0`
+- Stats: `/stats`
 
 ## Contributors
 
