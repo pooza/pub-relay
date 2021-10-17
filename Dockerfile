@@ -16,8 +16,6 @@ RUN shards build --release
 
 FROM base AS runner
 
-VOLUME ["/relay/data"]
-
 RUN apk -U upgrade && \
     apk add \
     pcre \
