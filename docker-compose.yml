@@ -1,0 +1,31 @@
+version: '3'
+services:
+
+  redis:
+    restart: always
+    image: redis:6.0-alpine
+    networks:
+      - internal_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+    volumes:
+      - ./redis:/data
+
+  relay:
+    build: .
+    restart: always
+    networks:
+      - external_network
+      - internal_network
+    ports:
+      - "127.0.0.1:8085:8085"
+    depends_on:
+      - redis
+    volumes:
+      - ./.env:/relay/.env:ro
+      - ./actor.pem:/relay/actor.pem:ro
+
+networks:
+  external_network:
+  internal_network:
+    internal: true
