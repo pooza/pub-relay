@@ -58,13 +58,6 @@ bin/pub-relay
 
 ## Usage
 
-### Endpoints
-
-- Inbox: `/inbox`
-- Actor: `/actor`
-- NodeInfo: `/nodeinfo/2.0`
-- Stats: `/stats`
-
 ## Contributors
 
 - [RX14](https://source.joinmastodon.org/RX14) creator, maintainer
