@@ -1,5 +1,3 @@
-require "circuit_breaker"
-
 class PubRelay::SubscriptionManager::DeliverWorker
   record Delivery,
     message : String,
@@ -20,11 +18,6 @@ class PubRelay::SubscriptionManager::DeliverWorker
     @subscription_manager : SubscriptionManager
   )
     @mailbox = Channel(Delivery).new(100)
-    @breaker = CircuitBreaker.new(
-      threshold: 5,
-      timewindow: 60,
-      reenable_after: 300
-    )
   end
 
   getter(client : HTTP::Client) do
@@ -50,10 +43,8 @@ class PubRelay::SubscriptionManager::DeliverWorker
       @client = nil
 
       begin
-        @breaker.run do
-          response = client.post(@inbox_url.request_target, headers: headers, body: delivery.message)
-        end
-      rescue ex : CircuitOpenException | Socket::Error | IO::TimeoutError | OpenSSL::SSL::Error
+        response = client.post(@inbox_url.request_target, headers: headers, body: delivery.message)
+      rescue ex : Socket::Error | IO::TimeoutError | OpenSSL::SSL::Error
         send_result(delivery, ex.inspect, start_time)
         return
       end
