@@ -21,13 +21,6 @@ Operations:
         - Object: `https://www.w3.org/ns/activitystreams#Public`
     - Send an Undo of Follow activity to the inbox to unsubscribe
         - Object of object: `https://www.w3.org/ns/activitystreams#Public`
-- for Pleroma or compatible implementation
-    - Follow `actor` with mix command or pleroma_ctl
-        - `MIX_ENV=prod mix pleroma.relay follow https://your.relay.hostname/actor`
-        - `./bin/pleroma_ctl relay follow https://your.relay.hostname/actor`
-    - Unfollow `actor` with mix command or pleroma_ctl
-        - `MIX_ENV=prod mix pleroma.relay unfollow https://your.relay.hostname/actor`
-        - `./bin/pleroma_ctl relay unfollow https://your.relay.hostname/actor`
 - Send anything else to the inbox to broadcast it
     - Supported types: `Create`, `Update`, `Delete`, `Announce`, `Undo`, `Move`, `Like`, `Add`, `Remove`
 
