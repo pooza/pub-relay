@@ -62,3 +62,5 @@ bin/pub-relay
 
 - [RX14](https://source.joinmastodon.org/RX14) creator, maintainer
 - [noellabo](https://github.com/noellabo)
+- [Candinya](https://candinya.com)
+- MeiMei
