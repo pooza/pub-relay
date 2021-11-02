@@ -24,21 +24,32 @@ class PubRelay::WebServer::InboxHandler
       error(400, "Invalid activity JSON:", "\n#{ex.inspect_with_backtrace}")
     end
 
-    case activity
-    when .follow?
+    if activity.follow?
       handle_follow(actor_from_signature, activity)
-    when .unfollow?, .reject?
+    elsif activity.unfollow? || activity.reject?
       handle_unfollow(actor_from_signature, activity)
-    when .accept?
+    elsif activity.accept?
       handle_accept(actor_from_signature, activity)
-    when .older_published?
-      error(200, "Skip old activity:", "\n#{activity.id}")
-    when .check_duplicate?(@redis)
-      error(200, "Skip the activity id that the server already knows:", "\n#{activity.id}")
-    when .valid_for_rebroadcast?
+    elsif activity.valid_for_rebroadcast?
+      if !activity.signature_present?
+        error(400, "Skip unsigned activity:", "\n#{activity.id}")
+      end
+
+      if !activity.addressed_to_public?
+        error(400, "Skip non public activity:", "\n#{activity.id}")
+      end
+
+      if !activity.valid_age?
+        error(200, "Skip old activity:", "\n#{activity.id}")
+      end
+
+      if activity.has_duplicate?(@redis)
+        error(200, "Skip the activity id that the server already knows:", "\n#{activity.id}")
+      end
+
       handle_forward(actor_from_signature, request_body)
-    when .valid_for_relay?
-      handle_relay(actor_from_signature, activity)
+    else
+      error(400, "Skip unsupported activity:", "\n#{activity.id}")
     end
 
     response.status_code = 202
@@ -49,16 +60,7 @@ class PubRelay::WebServer::InboxHandler
     inbox_url = URI.parse(actor.inbox_url) rescue nil
     error(400, "Inbox URL was not a valid URL") unless inbox_url
 
-    if actor.pleroma_relay?
-      @subscription_manager.send(
-        SubscriptionManager::FollowSent.new(
-          domain: actor.domain,
-          inbox_url: inbox_url,
-          following_id: route_url("/#{UUID.random}"),
-          following_actor_id: actor.id
-        )
-      )
-    elsif activity.object_id != Activity::PUBLIC_COLLECTION
+    if activity.object_id != Activity::PUBLIC_COLLECTION
       error(400, "Follow only allowed for #{Activity::PUBLIC_COLLECTION}")
     end
 

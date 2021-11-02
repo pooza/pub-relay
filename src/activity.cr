@@ -26,7 +26,7 @@ class PubRelay::Activity
     @types = [type]
   end
 
-  def check_duplicate?(redis)
+  def has_duplicate?(redis)
     d = @duplicate
     return d unless d.nil?
 
@@ -68,22 +68,14 @@ class PubRelay::Activity
     to.includes?(PUBLIC_COLLECTION) || cc.includes?(PUBLIC_COLLECTION)
   end
 
-  FORWARD_TYPES = {"Update", "Delete", "Undo", "Move", "Like", "Add", "Remove"}
-  RELAY_TYPES   = {"Create", "Announce"}
+  FORWARD_TYPES = {"Create", "Announce", "Update", "Delete", "Undo", "Move", "Like", "Add", "Remove"}
 
   def valid_for_rebroadcast?
-    addressed_to_public? && (
-      types.any? { |type| FORWARD_TYPES.includes? type } ||
-        signature_present? && types.any? { |type| RELAY_TYPES.includes? type }
-    )
+    types.any? { |type| FORWARD_TYPES.includes? type }
   end
 
-  def valid_for_relay?
-    types.any? { |type| RELAY_TYPES.includes? type }
-  end
-
-  def older_published?
-    published.nil? || published.not_nil! < Time.utc - 30.minutes
+  def valid_age?
+    published.nil? || published.not_nil! > Time.utc - 30.minutes
   end
 
   class Object
