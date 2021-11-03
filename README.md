@@ -28,9 +28,7 @@ Requirements:
 
 - All requests must be HTTP-signed with a valid actor
 - Only payloads that contain a linked-data signature will be re-broadcast
-    - If the relay cannot re-broadcast, deliver an announce activity
 - Only payloads addressed to `https://www.w3.org/ns/activitystreams#Public` will be re-broadcast
-    - Deliver all activities except `Create`
 
 ## Installation
 
