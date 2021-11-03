@@ -1,5 +1,23 @@
-pub-relay (fork by noellabo)
+pub-relay (mei23)
 =========
+
+[pub-relay (fork by noellabo)](https://github.com/noellabo/pub-relay) のフォーク。
+
+ただ、大きな機能が廃止されているため リファレンス実装 [pub-relay](https://source.joinmastodon.org/mastodon/pub-relay) に近いです。  
+pub-relay から見ると主に以下の変更があります。
+
+ - サポートタイプに `Move`, `Like`, `Add`, `Remove` を追加 (fork by noellabo から)
+ - 管理機能を追加 (fork by noellabo から)
+ - バグ修正 (あちこちから)
+ - Docker対応
+
+主に開発用にリファレンス実装に以下の変更を加えることを目的にしています。
+
+- 動かしやすくする
+- バグや想定外の挙動をなくす
+- トラブルシュートしやすくする
+
+---
 
 ...is a service-type ActivityPub actor that will re-broadcast anything sent to it to anyone who subscribes to it.
 
