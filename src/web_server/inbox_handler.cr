@@ -29,6 +29,7 @@ class PubRelay::WebServer::InboxHandler
     elsif activity.unfollow? || activity.reject?
       handle_unfollow(actor_from_signature, activity)
     elsif activity.accept?
+      # TODO: LitePub用だからもういらない
       handle_accept(actor_from_signature, activity)
     elsif activity.valid_for_rebroadcast?
       if !activity.signature_present?
