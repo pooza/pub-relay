@@ -10,7 +10,10 @@ authors:
 dependencies:
   earl:
     github: ysbaddaden/earl
-    branch: master
+    branch: main
+  pool:
+    github: ysbaddaden/pool
+    version: '~> 0.2.0'
   openssl_ext:
     github: stakach/openssl_ext
     version: '~> 2.1.5'
