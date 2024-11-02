@@ -1,5 +1,5 @@
 name: pub-relay
-version: 0.2.0-m1+2
+version: 0.2.0-m1-3
 
 authors:
   - RX14 <chris@rx14.co.uk>
@@ -33,6 +33,6 @@ targets:
   pub-relay:
     main: src/entrypoint.cr
 
-crystal: ">= 1.1.1, < 2.0"
+crystal: '>= 1.10.0, < 2.0'
 
 license: AGPL3
