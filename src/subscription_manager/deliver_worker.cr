@@ -1,3 +1,5 @@
+require "log"
+
 class PubRelay::SubscriptionManager::DeliverWorker
   record Delivery,
     message : String,
@@ -65,9 +67,9 @@ class PubRelay::SubscriptionManager::DeliverWorker
     message = "POST #{@inbox_url} - #{status} (#{time.total_milliseconds}ms)"
 
     if status.is_a?(Int) && 200 <= status < 300
-      log.debug message
+      Log.debug message
     else
-      log.info message
+      Log.info message
     end
 
     @stats.send Stats::DeliveryPayload.new(@domain, status.to_s, delivery.counter)
