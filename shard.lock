@@ -10,7 +10,7 @@ shards:
 
   openssl_ext:
     git: https://github.com/stakach/openssl_ext.git
-    version: 2.1.5
+    version: 2.4.4
 
   pool:
     git: https://github.com/ysbaddaden/pool.git
