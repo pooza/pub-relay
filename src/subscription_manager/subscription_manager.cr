@@ -305,13 +305,13 @@ class PubRelay::SubscriptionManager
   end
 
   def trap(agent, exception)
-    return Log.error {"Trapped agent was not a DeliverWorker!") unless agent.is_a? DeliverWorker}
+    return Log.error {"Trapped agent was not a DeliverWorker!"} unless agent.is_a? DeliverWorker
 
     # This is a worker unsubscribing
     return if agent.stopping? && !@workers.includes?(agent)
 
     if exception
-      Earl::Logger.error(agent, exception) if exception
+      #Earl::Logger.error(agent, exception) if exception
       Log.error { "worker for #{agent.domain} crashed (#{exception.class.name})" }
     else
       Log.error { "worker for #{agent.domain} exited early" } if self.running?
