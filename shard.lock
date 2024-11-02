@@ -6,7 +6,7 @@ shards:
 
   earl:
     git: https://github.com/ysbaddaden/earl.git
-    version: 0.2.0+git.commit.9e35bd56280b7dc8bef63a3116d056eebaa5ddd6
+    version: 0.2.0+git.commit.3f4c145e11946eaa137c8bd42ddd1d1cb46bfc5d
 
   openssl_ext:
     git: https://github.com/stakach/openssl_ext.git
@@ -19,6 +19,10 @@ shards:
   redis:
     git: https://github.com/stefanwille/crystal-redis.git
     version: 2.8.3
+
+  syn:
+    git: https://github.com/ysbaddaden/syn.git
+    version: 0.2.0
 
   webmock:
     git: https://github.com/manastech/webmock.cr.git
