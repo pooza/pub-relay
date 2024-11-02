@@ -44,12 +44,12 @@ class PubRelay::Stats
     if delivery.counter > prev_counter
       @latest_delivery_per_domain[delivery.domain] = delivery.counter
     else
-      Log.info "Message was delivered out of order for #{delivery.domain}"
+      Log.info {"Message was delivered out of order for #{delivery.domain}"}
     end
   end
 
   def call(payload : DeliveryCounterPayload)
-    Log.warn "Delivery counter went backwards!" unless payload.counter > @latest_delivery
+    Log.warn {"Delivery counter went backwards!" unless payload.counter > @latest_delivery}
     @latest_delivery = payload.counter
   end
 

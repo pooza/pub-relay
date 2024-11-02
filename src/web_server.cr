@@ -35,7 +35,7 @@ class PubRelay::WebServer
     @server = server = HTTP::Server.new(self)
 
     bind_ip = server.bind_tcp(@bindhost, @port)
-    Log.info("Listening on #{bind_ip}")
+    Log.info {"Listening on #{bind_ip}"}
 
     server.listen
   end
@@ -93,14 +93,14 @@ class PubRelay::WebServer
 
     case exception
     when ClientError
-      Log.warn "#{log_message} #{exception.message}"
+      Log.warn {#{log_message} #{exception.message}"}
       @stats.send Stats::HTTPResponsePayload.new(exception.error_code, context.relay_request_domain)
     when Exception
-      Log.error log_message
-      Log.error exception
+      Log.error {log_message}
+      Log.error {exception}
       @stats.send Stats::HTTPResponsePayload.new("500", context.relay_request_domain)
     else
-      Log.debug log_message
+      Log.debug {log_message}
       @stats.send Stats::HTTPResponsePayload.new(context.response.status_code.to_s, context.relay_request_domain)
     end
   end

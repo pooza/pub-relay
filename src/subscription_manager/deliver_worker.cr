@@ -67,9 +67,9 @@ class PubRelay::SubscriptionManager::DeliverWorker
     message = "POST #{@inbox_url} - #{status} (#{time.total_milliseconds}ms)"
 
     if status.is_a?(Int) && 200 <= status < 300
-      Log.debug message
+      Log.debug {message}
     else
-      Log.info message
+      Log.info {message}
     end
 
     @stats.send Stats::DeliveryPayload.new(@domain, status.to_s, delivery.counter)

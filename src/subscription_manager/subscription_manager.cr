@@ -90,7 +90,7 @@ class PubRelay::SubscriptionManager
       @subscribed_workers << deliver_worker if state.subscribed? && (following_state.undefined? || following_state.subscribed?)
     end
 
-    Log.info "Found #{@workers.size} subscriptions, #{@subscribed_workers.size} of which are subscribed"
+    Log.info {"Found #{@workers.size} subscriptions, #{@subscribed_workers.size} of which are subscribed"}
   end
 
   def peers
@@ -108,7 +108,7 @@ class PubRelay::SubscriptionManager
   end
 
   def call(subscription : Subscription)
-    Log.info "Received subscription for #{subscription.domain}"
+    Log.info {"Received subscription for #{subscription.domain}"}
 
     deliver_worker = DeliverWorker.new(
       subscription.domain, subscription.inbox_url, @relay_domain, @private_key, @stats, self
@@ -145,7 +145,7 @@ class PubRelay::SubscriptionManager
   end
 
   def call(following : FollowSent)
-    Log.info "Send follow to #{following.domain}"
+    Log.info {"Send follow to #{following.domain}"}
 
     deliver_worker = DeliverWorker.new(
       following.domain, following.inbox_url, @relay_domain, @private_key, @stats, self
@@ -265,7 +265,7 @@ class PubRelay::SubscriptionManager
     state = get_state(domain)
 
     raise "Invalid transition for #{domain} (#{state} -> #{new_state})" unless state.transition? new_state
-    Log.info "Transitioning #{domain} (#{state} -> #{new_state})"
+    Log.info {"Transitioning #{domain} (#{state} -> #{new_state})"}
 
     @redis.hset(key_for(domain), "state", new_state.to_s)
   end
@@ -274,7 +274,7 @@ class PubRelay::SubscriptionManager
     state = get_following_state(domain)
 
     raise "Invalid transition for #{domain} (#{state} -> #{new_state})" unless state.transition? new_state
-    Log.info "Transitioning #{domain} (#{state} -> #{new_state})"
+    Log.info {"Transitioning #{domain} (#{state} -> #{new_state})"}
 
     @redis.hset(key_for(domain), "following_state", new_state.to_s)
   end
@@ -297,7 +297,7 @@ class PubRelay::SubscriptionManager
     @workers << deliver_worker
 
     spawn do
-      Log.error "Supervision started when subscription manager not running!" unless self.running?
+      Log.error {"Supervision started when subscription manager not running!" unless self.running?}
       while self.running? && deliver_worker.starting?
         deliver_worker.start(link: self)
       end
@@ -305,7 +305,7 @@ class PubRelay::SubscriptionManager
   end
 
   def trap(agent, exception)
-    return Log.error("Trapped agent was not a DeliverWorker!") unless agent.is_a? DeliverWorker
+    return Log.error {"Trapped agent was not a DeliverWorker!") unless agent.is_a? DeliverWorker}
 
     # This is a worker unsubscribing
     return if agent.stopping? && !@workers.includes?(agent)
